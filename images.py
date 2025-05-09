@@ -2,7 +2,6 @@ from ultralytics import YOLO
 import cv2
 import os
 
-# Load the trained YOLOv8 model
 model = YOLO("last.pt")
 
 # Supported image formats
@@ -21,10 +20,8 @@ image_files = [
 for image_name in image_files:
     image_path = os.path.join(image_folder, image_name)
 
-    # Read the image
     image = cv2.imread(image_path)
 
-    # Run YOLOv8 inference on the image
     results = model(image)
 
     # Plot the results (bounding boxes, labels)
