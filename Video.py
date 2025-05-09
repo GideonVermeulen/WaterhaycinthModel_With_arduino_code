@@ -2,13 +2,10 @@ from ultralytics import YOLO
 import cv2
 import os
 
-# Load a pre-trained YOLOv8 model
-model = YOLO("last.pt")  # Use your trained model
+model = YOLO("last.pt")
 
-# Supported video formats
 video_extensions = ['.mp4', '.webm', '.avi', '.mov', '.mkv']
 
-# Folder containing the videos
 video_folder = 'videos'
 
 # Get list of all video files in the 'videos' folder

@@ -7,13 +7,11 @@ import time
 arduino = serial.Serial('COM3', 9600)  # Change 'COM3' to match your setup
 time.sleep(2)  # Wait for Arduino to initialize
 
-# Load YOLO model
 model = YOLO("best.pt")
 
-# Open webcam
 cap = cv2.VideoCapture(0)
 
-# Track last command sent to prevent repeated triggers
+
 last_sent = None
 
 while cap.isOpened():
@@ -21,20 +19,18 @@ while cap.isOpened():
     if not ret:
         break
 
-    # Run YOLO model
+
     results = model(frame)
 
-    # Check for confident detection (above 60%)
     object_detected = False
     box_drawn = False
 
     for result in results:
         if len(result.boxes) > 0:
             for box in result.boxes:
-                if box.conf > 0.55:  # Only consider boxes with > 60% confidence
+                if box.conf > 0.55:  # Only consider boxes with > 55% confidence
                     object_detected = True
 
-                    # Draw one bounding box only
                     if not box_drawn:
                         x1, y1, x2, y2 = map(int, box.xyxy[0])
                         cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 0, 0), 3)
@@ -42,7 +38,7 @@ while cap.isOpened():
                         cv2.putText(frame, label, (x1, y1 - 10),
                                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0), 2)
                         box_drawn = True
-                    break  # Exit after first high-confidence detection
+                    break
 
     # Debounced serial communication
     if object_detected and last_sent != b'1':
